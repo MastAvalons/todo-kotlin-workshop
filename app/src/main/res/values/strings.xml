@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">TodoKotlinWorkshop</string>
+    <string name="task_list_empty_title">Task list is empty</string>
+    <string name="task_list_empty_subtitle">Anything to add?</string>
+
+    <string name="title">Title:</string>
+    <string name="description">Description:</string>
+    <string name="due_date">Due date:</string>
+    <string name="what_is_to_be_done">What is to be done?</string>
+    <string name="enter_task_here">Enter Task Here</string>
+    <string name="notifications">Notifications</string>
+    <string name="no_notifications_if_date_not_set">No notifications if dateTime not set</string>
+    <string name="add_to_list">Add to List</string>
+    <string name="task_completed">Is task completed?</string>
+    <string name="save">Save</string>
+    <string name="time">Time</string>
+    <string name="date">Date</string>
 </resources>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "57957370780",
+    "firebase_url": "https://todo-kotlin-workshop.firebaseio.com",
+    "project_id": "todo-kotlin-workshop",
+    "storage_bucket": "todo-kotlin-workshop.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57957370780:android:047b4d1d7d1c167a",
+        "android_client_info": {
+          "package_name": "com.epam.todokotlinworkshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "57957370780-i5p48vg78ok0n7ottccp5jgn51hrjp11.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuILYv52Ru8bwEtG-8NzYmq0Hil8i55JU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
