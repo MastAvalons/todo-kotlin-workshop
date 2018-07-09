@@ -28,10 +28,11 @@ object DataSource {
     private const val TASK_NAME_DEFAULT = "Task"
     private const val AUTHOR_NAME_DEFAULT = "Others"
 
-    fun addTask(task: Task) {
+    fun addTask(task: Task, callback: (isSuccessful: Boolean) -> Unit) {
         database.collection(COLLECTION_NAME)
                 .add(task)
                 .addOnCompleteListener {
+                    callback(it.isSuccessful)
                 }
     }
 
@@ -54,7 +55,7 @@ object DataSource {
                 }
     }
 
-    fun observerTasks(callback: (task: List<Task>) -> Unit): ListenerRegistration {
+    fun observeTasks(callback: (task: List<Task>) -> Unit): ListenerRegistration {
         return database.collection(COLLECTION_NAME)
                 .addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
                     if (e != null) return@EventListener

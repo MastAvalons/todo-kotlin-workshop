@@ -1,3 +1,5 @@
+package com.epam.todokotlinworkshop.ui.tasklist
+
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.AppCompatCheckBox
 import android.support.v7.widget.RecyclerView
@@ -7,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.epam.todokotlinworkshop.R
 import com.epam.todokotlinworkshop.data.Task
+import com.epam.todokotlinworkshop.ui.formatted
 
 
 class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
@@ -53,11 +56,10 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
 
 
     class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {
-        val title = root.findViewById<TextView>(R.id.tvTitle)
-        val dueDate = root.findViewById<TextView>(R.id.tvDueDate)
-        val checkbox = root.findViewById<AppCompatCheckBox>(R.id.cbChecked)
+        val title = root.findViewById<TextView>(R.id.tvTitle)!!
+        val dueDate by lazy { root.findViewById<TextView>(R.id.tvDueDate)!! }
+        val checkbox by lazy { root.findViewById<AppCompatCheckBox>(R.id.cbChecked)!! }
     }
-
 }
 
 sealed class Item
@@ -65,10 +67,11 @@ data class TaskItem(val task: Task) : Item() {
     val name: String
         get() = task.name
     val dueDate: String
-        get() = task.dueDate?.toString() ?: "00:00"
+        get() = task.dueDate?.formatted ?: ""
     val checked: Boolean
         get() = task.completed
 }
+
 data class Header(val title: String) : Item()
 object Empty : Item()
 

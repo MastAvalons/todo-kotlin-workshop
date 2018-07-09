@@ -23,7 +23,7 @@ import java.util.*
 
 class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener {
 
-    private var selectedDate: Date? = null
+    private var selectedDate: Date = Date()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -47,14 +47,13 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
 
     private fun initToolbar() {
         (activity as AppCompatActivity).supportActionBar?.apply {
-            title = "Add new task"
+            title = getString(R.string.add_new_task)
             setDisplayHomeAsUpEnabled(true);
             setDisplayShowHomeEnabled(true);
         }
     }
 
     private fun showDateDialog() {
-        selectedDate = Date()
         val calendar = Calendar.getInstance()
         calendar.time = selectedDate
         val datePickerDialog = DatePickerDialog(
@@ -64,8 +63,8 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
     }
 
     private fun showTimeDialog() {
-        selectedDate = Date()
         val calendar = Calendar.getInstance()
+        calendar.time = selectedDate
         val timePickerDialog = TimePickerDialog(
                 context, this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
         timePickerDialog.show()
@@ -73,12 +72,12 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
+        calendar.time = selectedDate
         calendar.set(Calendar.YEAR, year)
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
         selectedDate = calendar.time
-        tvDueDate.text = DateUtils.getDate(selectedDate!!)
-        tvDueTime.text = DateUtils.getTime(selectedDate!!)
+        tvDueDate.text = DateUtils.getDate(selectedDate)
     }
 
     override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
@@ -87,11 +86,15 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
         selectedDate = calendar.time
-        tvDueTime.text = DateUtils.getTime(selectedDate!!)
+        tvDueTime.text = DateUtils.getTime(selectedDate)
     }
 
     private fun saveTask() {
-        if(etTitle.text.isEmpty()) Toast.makeText(context, "Title should not be empty", Toast.LENGTH_LONG).show()
+        if (etTitle.text.isEmpty()) {
+            Toast.makeText(context, "Title should not be empty", Toast.LENGTH_LONG).show()
+            return
+        }
+        btnSave.isEnabled = false
         DataSource.addTask(
                 Task(
                         etTitle.text.toString(),
@@ -100,12 +103,18 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
                         selectedDate,
                         cbCompleted.isChecked
                 )
-        )
-        activity?.onBackPressed()
+        ) { isSuccessful ->
+            if (isSuccessful)
+                activity?.onBackPressed()
+            else {
+                Toast.makeText(context, "An error occurred", Toast.LENGTH_LONG).show()
+                btnSave.isEnabled = true
+            }
+        }
     }
 
     override fun onClick(view: View) {
-        when(view.id) {
+        when (view.id) {
             R.id.tvDueDate -> showDateDialog()
             R.id.tvDueTime -> showTimeDialog()
             R.id.btnSave -> saveTask()

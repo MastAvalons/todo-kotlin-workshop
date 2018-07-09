@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.epam.todokotlinworkshop.R
+import com.epam.todokotlinworkshop.data.DataSource
 import com.epam.todokotlinworkshop.data.Task
 import com.epam.todokotlinworkshop.ui.showFragment
 import com.epam.todokotlinworkshop.ui.taskdetails.AddTaskFragment
@@ -30,22 +31,10 @@ class FragmentTaskList : Fragment() {
                         adapter = taskListAdapter
                         layoutManager = LinearLayoutManager(context)
                     }
+
+//                    taskListAdapter.items = mockTaskList()
+                    disposable = DataSource.observeTasks(::displayTasks)
                 }
-
-
-//        val root = inflater.inflate(R.layout.fragment_task_list, container, false)
-//        root.apply {
-//            taskListAdapter = TaskListAdapter()
-//            with(findViewById<RecyclerView>(R.id.rvTasks)) {
-//                adapter = taskListAdapter
-//                layoutManager = LinearLayoutManager(context)
-//            }
-//        }
-//
-//
-//        disposable = DataSource.observerTasks(::displayTasks)
-//
-//        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,7 +69,6 @@ class FragmentTaskList : Fragment() {
         val authors = taskItemList
                 .map { it.toTask().task.authorName }.toSet()
 
-
         authors.forEach { author ->
             val firstIndex = taskItemList.indexOfFirst {
                 it is TaskItem && it.toTask().task.authorName == author
@@ -96,6 +84,7 @@ class FragmentTaskList : Fragment() {
     }
 
     companion object {
+
         fun newInstance(): FragmentTaskList {
             return FragmentTaskList()
         }
